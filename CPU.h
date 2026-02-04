@@ -31,4 +31,4 @@ void setFlag(CPU *cpu, Flag f);
 
 CPU create_cpu(void);
 
-CPU cpu_loop(CPU *cpu, const uint8_t *program, size_t program_len);
+void cpu_loop(CPU *cpu, const uint8_t *program, size_t program_len);

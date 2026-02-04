@@ -3,7 +3,7 @@
 
 int main() {
 
-    uint8_t prgm[] = {0xA9, 0x00};
+    uint8_t prgm[] = {0xA9, 0x05, 0x00};
 
     CPU cpu = create_cpu();
 

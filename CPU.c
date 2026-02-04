@@ -1,4 +1,50 @@
 #include "CPU.h"
+#include "instructions.h"
+
+CPU create_cpu(void) {
+    CPU cpu;
+
+    cpu.reg.A = 0;
+    cpu.reg.P = 0x20;
+    cpu.reg.PC = 0;
+    cpu.reg.S = 0;
+
+    return cpu;
+}
+
+void cpu_loop(CPU *cpu, const uint8_t *program, size_t program_len) {
+
+    cpu->reg.PC = 0;
+    bool alive = true;
+
+    while(alive == true) {
+
+        uint8_t opcode = program[cpu->reg.PC];
+        cpu->reg.PC += 1;
+
+        switch (opcode) {
+            case 0x00:
+                BRK(cpu, program);
+                printf("0x00\n");
+                alive = false;
+                break;
+
+            case 0xA9:
+                LDA(cpu, program);
+                printf("0xA9\n");
+                printf("%d\n", cpu->reg.A);
+                break;
+        
+            default:
+                break;
+        }
+    }
+    printf("CPU Status Register P: 0b");
+    for (int i = 7; i >= 0; i--) {
+        printf("%d", (cpu->reg.P >> i) & 1);
+    }
+    printf("\n");
+}
 
 void setFlag(CPU *cpu, Flag f) {
     switch (f) {
@@ -68,48 +114,4 @@ Flag getFlag(CPU *cpu) {
     if (cpu->reg.P & 0b10000000) return N;
     
     return U;
-}
-
-CPU create_cpu(void) {
-    CPU cpu;
-
-    cpu.reg.A = 0;
-    cpu.reg.P = 0x20;
-    cpu.reg.PC = 0;
-    cpu.reg.S = 0;
-
-    return cpu;
-}
-
-CPU cpu_loop(CPU *cpu, const uint8_t *program, size_t program_len) {
-
-    cpu->reg.PC = 0;
-    bool alive = true;
-
-    while(alive == true) {
-
-        uint8_t opcode = program[cpu->reg.PC];
-        cpu->reg.PC += 1;
-
-        switch (opcode) {
-            case 0x00:
-                setFlag(cpu, B);
-                printf("0x00\n");
-                alive = false;
-                break;
-
-            case 0xA9:
-                setFlag(cpu, C);
-                printf("0xA9\n");
-                break;
-        
-            default:
-                break;
-        }
-    }
-    printf("CPU Status Register P: 0b");
-    for (int i = 7; i >= 0; i--) {
-        printf("%d", (cpu->reg.P >> i) & 1);
-    }
-    printf("\n");
 }
