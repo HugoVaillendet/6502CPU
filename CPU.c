@@ -1,5 +1,6 @@
 #include "CPU.h"
 #include "instructions.h"
+#include "memory.h"
 
 CPU create_cpu(void) {
     CPU cpu;
@@ -14,12 +15,13 @@ CPU create_cpu(void) {
 
 void cpu_loop(CPU *cpu, const uint8_t *program, size_t program_len) {
 
-    cpu->reg.PC = 0;
     bool alive = true;
+    memcpy(&cpu->mem[ROM_START], program, program_len);
+    cpu->reg.PC = ROM_START;
 
     while(alive == true) {
 
-        uint8_t opcode = program[cpu->reg.PC];
+        uint8_t opcode = cpu->mem[cpu->reg.PC];
         cpu->reg.PC += 1;
 
         switch (opcode) {

@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
+
+#define ROM_START 0x8000
 
 typedef struct {
     uint8_t A;
@@ -14,6 +17,7 @@ typedef struct {
 
 typedef struct {
     Register reg;
+    uint8_t mem[65536];         //64KiB of memory
 } CPU;
 
 typedef enum {

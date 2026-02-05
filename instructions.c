@@ -5,7 +5,7 @@ void BRK(CPU *cpu, const uint8_t *program) {
 }
 
 void LDA(CPU *cpu, const uint8_t *program) {
-    uint8_t param = program[cpu->reg.PC];
+    uint8_t param = cpu->mem[cpu->reg.PC];
     cpu->reg.PC += 1;
     cpu->reg.A = param;
     setFlag(cpu, C);
